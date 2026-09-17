@@ -1,0 +1,31 @@
+import { Link } from "@/components/common/link";
+import { usePageTree } from "@/components/docs/tree-context";
+import { PAGES_NEW } from "@/lib/docs";
+import { getPagesFromFolder, type PageTreeFolder } from "@/lib/page-tree";
+
+export function ComponentsList() {
+  const tree = usePageTree();
+  const list = getPagesFromFolder(
+    tree.children.find((page) => page.$id === "components") as PageTreeFolder,
+  );
+
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-x-8 lg:gap-x-16 lg:gap-y-6 xl:gap-x-20">
+      {list.map((component) => (
+        <Link
+          key={component.$id}
+          href={component.url}
+          className="inline-flex items-center gap-2 text-lg font-medium underline-offset-4 hover:underline md:text-base"
+        >
+          {component.name}
+          {PAGES_NEW.includes(component.url) && (
+            <span
+              className="flex size-2 rounded-full bg-blue-500"
+              title="New"
+            />
+          )}
+        </Link>
+      ))}
+    </div>
+  );
+}
