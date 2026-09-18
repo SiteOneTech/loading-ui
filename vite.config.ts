@@ -3,21 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import { fumadocsMdx } from "fumadocs-mdx/vite";
-import type { Plugin } from "vite";
 import { defineConfig } from "vite";
-
-function nodeFilenamePolyfill(): Plugin {
-  return {
-    name: "node-filename-polyfill",
-    apply: "build",
-    renderChunk(code) {
-      return {
-        code: `if (typeof globalThis.__filename === "undefined") { globalThis.__filename = "/index.js"; globalThis.__dirname = "/"; }\n${code}`,
-        map: null,
-      };
-    },
-  };
-}
 
 export default defineConfig({
   server: {
@@ -36,13 +22,16 @@ export default defineConfig({
       },
     }),
     react(),
-    nodeFilenamePolyfill(),
   ],
   resolve: {
     tsconfigPaths: true,
   },
   environments: {
     ssr: {
+      define: {
+        __filename: '"/index.js"',
+        __dirname: '"/"',
+      },
       optimizeDeps: {
         include: [
           "react",

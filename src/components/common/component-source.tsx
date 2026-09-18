@@ -7,7 +7,24 @@ import { getIconForLanguageExtension } from "@/components/common/icons";
 import { getComponentSource } from "@/lib/get-component-source";
 import { cn } from "@/lib/utils";
 
-export function ComponentSource({
+type ComponentSourceProps = React.ComponentProps<"div"> & {
+  name?: string;
+  src?: string;
+  title?: string;
+  language?: string;
+  collapsible?: boolean;
+  maxLines?: number;
+};
+
+export function ComponentSource(props: ComponentSourceProps) {
+  return (
+    <React.Suspense fallback={null}>
+      <ComponentSourceContent {...props} />
+    </React.Suspense>
+  );
+}
+
+function ComponentSourceContent({
   name,
   src,
   title,
@@ -15,14 +32,7 @@ export function ComponentSource({
   collapsible = true,
   className,
   maxLines,
-}: React.ComponentProps<"div"> & {
-  name?: string;
-  src?: string;
-  title?: string;
-  language?: string;
-  collapsible?: boolean;
-  maxLines?: number;
-}) {
+}: ComponentSourceProps) {
   const input = { name, src, title, language, maxLines };
   const { data } = useSuspenseQuery({
     queryKey: ["component-source", input],

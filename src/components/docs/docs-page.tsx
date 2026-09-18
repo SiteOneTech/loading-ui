@@ -1,5 +1,4 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { use } from "react";
 
 import { DocsCopyPage } from "@/components/docs/copy-page";
 import { DocsTableOfContents } from "@/components/docs/toc";
@@ -26,8 +25,7 @@ export function DocsPageContent({
     throw new Error(`unknown page: ${path}`);
   }
 
-  const { toc } = use(page.load());
-  const MDX = page.body;
+  const { toc, body: MDX } = page;
 
   return (
     <main

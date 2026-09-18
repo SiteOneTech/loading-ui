@@ -1,10 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { Suspense } from "react";
 
 import { DocsPageContent } from "@/components/docs/docs-page";
 import { createMetadata } from "@/lib/metadata";
 import { getDocsPage } from "@/lib/server";
-import { docs, source } from "@/lib/source";
+import { source } from "@/lib/source";
 
 export const Route = createFileRoute("/docs/$")({
   loader: async ({ params }) => {
@@ -14,8 +13,6 @@ export const Route = createFileRoute("/docs/$")({
     if (!data) {
       throw notFound();
     }
-
-    await docs.getPage(data.path)?.preload();
 
     return data;
   },
@@ -47,9 +44,5 @@ export const Route = createFileRoute("/docs/$")({
 function DocsSplatPage() {
   const data = Route.useLoaderData();
 
-  return (
-    <Suspense>
-      <DocsPageContent {...data} />
-    </Suspense>
-  );
+  return <DocsPageContent {...data} />;
 }

@@ -8,7 +8,6 @@ import { DOCS_CONTENT_ROUTE, DOCS_ROUTE } from "./constants";
 export const docs = defineDocs({
   dir: "src/content/docs",
   docs: {
-    async: true,
     schema: pageSchema,
     postprocess: {
       includeProcessedMarkdown: true,
