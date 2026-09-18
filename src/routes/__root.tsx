@@ -11,12 +11,15 @@ import { PageTreeProvider, usePageTree } from "@/components/docs/tree-context";
 import { Providers } from "@/components/providers";
 import { fonts } from "@/lib/fonts";
 import { defaultMetadata } from "@/lib/metadata";
-import { getSerializedPageTree } from "@/lib/server";
+import { getDiamondSponsorFn, getSerializedPageTree } from "@/lib/server";
 import { cn } from "@/lib/utils";
 import "@/assets/styles/colors.css";
 import "@/assets/styles/global.css";
 
 export const Route = createRootRoute({
+  beforeLoad: async () => ({
+    diamondSponsorId: await getDiamondSponsorFn(),
+  }),
   loader: () => getSerializedPageTree(),
   head: () => {
     const seo = defaultMetadata();

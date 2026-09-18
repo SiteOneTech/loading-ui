@@ -1,5 +1,3 @@
-import env from "../../env.config";
-
 export const SITE_NAME = "Loading UI";
 export const SITE_DESCRIPTION =
   "Free and open source CSS and React loaders, spinners, and animations to create polished, accessible loading states for modern web apps.";
@@ -53,12 +51,13 @@ type ResolvedImage = {
 };
 
 export function getBaseUrl() {
-  if (env.NODE_ENV === "development") {
+  if (import.meta.env.DEV) {
     return new URL("http://localhost:3000");
   }
 
-  if (env.SITE_URL) {
-    return new URL(env.SITE_URL);
+  const siteUrl = import.meta.env.SSR ? process.env.SITE_URL : undefined;
+  if (siteUrl) {
+    return new URL(siteUrl);
   }
 
   return new URL(`https://${PRODUCTION_HOST}`);

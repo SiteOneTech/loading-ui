@@ -1,9 +1,8 @@
 "use client";
 
-import { useDiamondSponsor } from "@/components/home/sponsors/diamond/use-diamond-sponsor";
-
 import { RankgrowButton, RankGrowMobileNavCta } from "./rankgrow";
 import { TurbostarterButton, TurboStarterMobileNavCta } from "./turbostarter";
+import { useRouteContext } from "@tanstack/react-router";
 
 const HEADER_CTAS = {
   turbostarter: TurbostarterButton,
@@ -20,8 +19,8 @@ type DiamondSponsorId = keyof typeof HEADER_CTAS;
 export const DiamondSponsorHeaderCta = ({
   ...props
 }: React.HTMLAttributes<HTMLAnchorElement>) => {
-  const sponsor = useDiamondSponsor();
-  const Cta = HEADER_CTAS[sponsor.id as DiamondSponsorId];
+  const { diamondSponsorId } = useRouteContext({ from: "__root__" });
+  const Cta = HEADER_CTAS[diamondSponsorId as DiamondSponsorId];
 
   if (!Cta) {
     return null;
@@ -33,8 +32,8 @@ export const DiamondSponsorHeaderCta = ({
 export const DiamondSponsorMobileNavCta = ({
   ...props
 }: React.ComponentProps<"a">) => {
-  const sponsor = useDiamondSponsor();
-  const Cta = MOBILE_NAV_CTAS[sponsor.id as DiamondSponsorId];
+  const { diamondSponsorId } = useRouteContext({ from: "__root__" });
+  const Cta = MOBILE_NAV_CTAS[diamondSponsorId as DiamondSponsorId];
 
   if (!Cta) {
     return null;

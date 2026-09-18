@@ -1,7 +1,9 @@
+import { getCookie, setCookie } from "@tanstack/react-start/server";
 import { createServerFn } from "@tanstack/react-start";
 import { findNeighbour } from "fumadocs-core/page-tree";
 import { z } from "zod";
 
+import { SPONSORS } from "@/lib/sponsors";
 import { getGitHubStars } from "@/lib/github-stars";
 import { getPageMarkdownUrl, source } from "@/lib/source";
 
@@ -47,3 +49,21 @@ export const getDocsPage = createServerFn({ method: "GET" })
       },
     };
   });
+
+const COOKIE_KEY = "diamond-sponsor-id";
+
+export const getDiamondSponsorFn = createServerFn({ method: "GET" }).handler(
+  () => {
+    const sponsors = SPONSORS.diamond;
+    const stored = getCookie(COOKIE_KEY);
+    const existing = sponsors.find(sponsor => sponsor.id === stored);
+
+    if (existing) {
+      return existing.id;
+    }
+
+    const picked = sponsors[Math.floor(Math.random() * sponsors.length)];
+    setCookie(COOKIE_KEY, picked.id, { path: "/", sameSite: "lax" });
+    return picked.id;
+  },
+);

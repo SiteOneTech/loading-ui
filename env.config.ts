@@ -5,7 +5,7 @@ import * as z from "zod";
 export default defineEnv({
   extends: [vite, cloudflareWorkers],
   shared: {
-    NODE_ENV: z.enum(["development", "production"]).default("development"),
+    NODE_ENV: z.enum(["development", "production"]),
   },
   server: {
     SITE_URL: z.url().optional(),
@@ -17,6 +17,7 @@ export default defineEnv({
   },
   env: {
     ...process.env,
+    NODE_ENV: import.meta.env.PROD ? "production" : "development",
     VITE_POSTHOG_PROJECT_TOKEN:
       import.meta.env?.VITE_POSTHOG_PROJECT_TOKEN ??
       process.env.VITE_POSTHOG_PROJECT_TOKEN,
